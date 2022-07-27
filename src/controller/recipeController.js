@@ -1,4 +1,4 @@
-const {addRecipe, getRecipe, countRecipe, updateRecipe} = require("../models/recipeModel");
+const {addRecipe, getRecipe, countRecipe, updateRecipe, getDetailRecipe, delRecipe} = require("../models/recipeModel");
 const createError = require("http-errors");
 const errorServ = new createError.InternalServerError();
 const { response } = require("../helper/response");
@@ -47,7 +47,7 @@ const update = async (req, res, next) =>{
 const getAllRecipe = async (req, res, next) =>{
     try {
         const page = parseInt(req.query.page) || 1;
-        let limit = parseInt(req.query.limit) || 4;
+        let limit = parseInt(req.query.limit) || 6;
         const offset = (page - 1) * limit;
         const sortBy = req.query.sortby || "id";
         const sortOrder = req.query.sortorder || "asc";
@@ -80,8 +80,33 @@ const getAllRecipe = async (req, res, next) =>{
     }
 };
 
+const getDetRecipe = async (req, res, next) => {
+    const id = req.params.id;
+    try {
+        const result = await getDetailRecipe(id);
+        response(res, result.rows, 200, "get data Recipe");
+    } catch (error) {
+        console.log(error);
+        next(errorServ);
+    }
+};
+
+const deleteRecipe = async (req, res, next) => {
+    const id = req.params.id;
+
+    try {
+        delRecipe(id);
+        response (res, id, 200, "delete portofolio success");
+    } catch (error) {
+        console.log(error);
+        next(errorServ);
+    }
+};
+
 module.exports = {
     add,
     update,
-    getAllRecipe
+    getAllRecipe,
+    getDetRecipe,
+    deleteRecipe
 };

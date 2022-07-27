@@ -31,6 +31,19 @@ const getRecipe = ({limit, offset, sortBy, sortOrder, search}) => {
     });
 };
 
+const getDetailRecipe = (id) => {
+    return new Promise ((resolve,reject)=>{
+        pool.query(`SELECT * FROM recipe WHERE id = ${id} `,
+        (error, result) => {
+            if (!error) {
+                resolve(result);
+            } else {
+                reject(error);
+            }
+        });
+    });
+};
+
 const updateRecipe = ({title, ingredients, recipe_photo, recipe_video, updatedAt},id) =>{
     return new Promise ((resolve, reject)=>{
         pool.query("UPDATE recipe SET title=$1, ingredients=$2, recipe_photo=$3, recipe_video=$4, updated_at=$5 WHERE id = $6",
@@ -45,9 +58,15 @@ const updateRecipe = ({title, ingredients, recipe_photo, recipe_video, updatedAt
     });
 };
 
+const delRecipe = (id) => {
+    return pool.query("DELETE FROM recipe WHERE id = $1", [id]);
+};
+
 module.exports = {
     addRecipe,
     countRecipe,
     getRecipe,
-    updateRecipe
+    updateRecipe,
+    getDetailRecipe,
+    delRecipe
 };

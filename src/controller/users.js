@@ -11,7 +11,7 @@ const register = async (req, res, next) => {
     const { email, password, hp, name } = req.body;
     const { rowCount } = await findEmail(email);
 
-    const salt = bcrypt.genSaltSync(8);
+    const salt = bcrypt.genSaltSync(10);
     const hashPassword = bcrypt.hashSync(password, salt);
 
     if (rowCount) {
@@ -51,19 +51,22 @@ const login = async (req, res, next) => {
     const payload = {
       email: user.email,
       full_name: user.full_name,
-      role: user.roles,
       id: user.id,
       hp: user.hp,
-      jobdesk: user.jobdesk,
-      address: user.address,
-      workplace: user.workplace,
       photo: user.photo,
-      description: user.description
     };
     
     // generate token
     user.token = authHelper.generateToken(payload);
     user.refreshToken = authHelper.gerateRefreshToken(payload);
+    res.cookie("token", user.token, {
+      httpOnly: true,
+      maxAge: 60*1000*60*12,
+      secure: process.env.NODE_ENV !== "Development" ? true: false,
+      path: "/",
+      sameSite: "strict"
+
+    });
 
     response(res, user, 201, "anda berhasil login");
   } catch (error) {
