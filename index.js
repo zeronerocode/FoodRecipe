@@ -20,7 +20,7 @@ app.use(
 );
 app.use(cors({
   credentials: false,
-  origin: "https://foodrecipe-e30pfoqsc-zeronerocode.vercel.app/",
+  origin: "https://foodrecipe-eosin.vercel.app/",
 }));
 app.use(bodyParser.json());
 app.use(cookieParser());
