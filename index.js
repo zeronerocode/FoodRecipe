@@ -19,8 +19,8 @@ app.use(
   })
 );
 app.use(cors({
-  credentials: true,
-  origin: "http://localhost:3000",
+  credentials: false,
+  origin: "https://foodrecipe-e30pfoqsc-zeronerocode.vercel.app/",
 }));
 app.use(bodyParser.json());
 app.use(cookieParser());
