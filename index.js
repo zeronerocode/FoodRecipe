@@ -8,7 +8,7 @@ const path = require("path");
 const createError = require("http-errors");
 const bodyParser = require("body-parser");
 const morgan = require("morgan");
-const port = process.env.PORT || 5001;
+const port = process.env.PORT || 5000;
 
 const app = express();
 const routeNavigation = require("./src/routeNavigation");
@@ -47,7 +47,6 @@ app.all("*", (req, res, next) => {
 app.use((err, req, res, next) => {
   const messError = err.message || "Internal Server Error";
   const statusCode = err.status || 500;
-
   res.status(statusCode).json({
     message: messError,
   });

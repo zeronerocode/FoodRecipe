@@ -1,5 +1,4 @@
 const multer = require("multer");
-const path = require("path");
 const cloudinary = require("cloudinary").v2;
 const { CloudinaryStorage } = require("multer-storage-cloudinary");
 
@@ -15,22 +14,16 @@ const storage = new CloudinaryStorage({
     folder: "hirejob",
   },
 });
-
+const maxSize = 200 * 1024 * 1024 ;
 const upload = multer({
   storage: storage,
-  limits: { fileSize: 2097152 },
-  fileFilter: function (req, file, cb) {
-    // Allowed ext
-    const filetypes = /jpeg|jpg|png/;
-    // Check ext
-    const extname = filetypes.test(path.extname(file.originalname).toLowerCase());
-    // Check mime
-    const mimetype = filetypes.test(file.mimetype);
-
-    if (mimetype && extname) {
-      return cb(null, true);
+  limits: { fileSize: maxSize  },
+  fileFilter: (req, file, cb) => {
+    if (file.mimetype === "image/png" || file.mimetype === "image/jpg" || file.mimetype === "image/jpeg" || file.mimetype === "video/mp4") {
+      cb(null, true);
     } else {
-      cb(new Error("jpg & png only"));
+      cb(null, false);
+      return cb(new Error("Only video with .mp4, photo with .png, .jpg, and .jpeg extension allowed!"));
     }
   },
 });

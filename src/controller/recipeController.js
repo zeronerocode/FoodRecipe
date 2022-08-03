@@ -15,6 +15,7 @@ const add = async (req, res, next) => {
             recipe_video : req.files.recipeVideo[0].path,
             createdAt : new Date()
         };
+        console.log(data);
         await addRecipe(data);
         response(res,data,200,"Insert Recipe Succesfully");
     }catch(error){

@@ -1,5 +1,6 @@
+/* eslint-disable no-unused-vars */
 const createError = require("http-errors");
-const bcrypt = require("bcrypt");
+const bcrypt = require("bcryptjs");
 const { v4: uuidv4 } = require("uuid");
 const { findEmail, insert, deleteUser } = require("../models/users");
 const { response } = require("../helper/response");
@@ -59,19 +60,33 @@ const login = async (req, res, next) => {
     // generate token
     user.token = authHelper.generateToken(payload);
     user.refreshToken = authHelper.gerateRefreshToken(payload);
-    res.cookie("token", user.token, {
-      httpOnly: true,
-      maxAge: 60*1000*60*12,
-      secure: process.env.NODE_ENV !== "Development" ? true: false,
-      path: "/",
-      sameSite: "strict"
+    // res.cookie("token", user.token, {
+    //   httpOnly: true,
+    //   maxAge: 60*1000*60*12,
+    //   secure: process.env.NODE_ENV !== "Development" ? true: false,
+    //   path: "/",
+    //   sameSite: "strict"
 
-    });
+    // });
 
     response(res, user, 201, "anda berhasil login");
   } catch (error) {
     console.log(error);
     next(new createError.InternalServerError());
+  }
+};
+
+const userLogout = (req, res, next) => {
+  const data = {
+    message: "logout success"
+  };
+
+  try {
+    res.cookie("token", "", { maxAge: 1 });
+    // res.redirect('http://localhost:3000/auth/user/login?redirect=true')
+    response(res, data, 200, "Logout Successful");
+  } catch (error) {
+    console.log(error);
   }
 };
 
@@ -103,5 +118,6 @@ module.exports = {
   register,
   login,
   delUser,
-  refreshToken
+  refreshToken,
+  userLogout
 };
