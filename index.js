@@ -21,6 +21,7 @@ app.use(
 app.use(cors({
   credentials: false,
   origin: "https://foodrecipe-eosin.vercel.app/",
+  // origin: "http://localhost:3000",
 }));
 app.use(bodyParser.json());
 app.use(cookieParser());
