@@ -18,10 +18,14 @@ app.use(
     crossOriginResourcePolicy: false,
   })
 );
+// app.use(cors({
+//   credentials: false,
+//   // origin: "https://foodrecipe-eosin.vercel.app/",
+//   origin: "http://localhost:3000",
+// }));
 app.use(cors({
-  credentials: false,
-  origin: "https://foodrecipe-eosin.vercel.app/",
-  // origin: "http://localhost:3000",
+  origin: ["http://localhost:3000", "https://foodrecipe-eosin.vercel.app"],
+  methods: ["GET", "POST", "PUT", "DELETE"]
 }));
 app.use(bodyParser.json());
 app.use(cookieParser());
