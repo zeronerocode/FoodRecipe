@@ -24,7 +24,7 @@ app.use(
 //   origin: "http://localhost:3000",
 // }));
 app.use(cors({
-  origin: ["http://localhost:3000", "https://foodrecipe-eosin.vercel.app"],
+  origin: ["https://foodrecipe-eosin.vercel.app","http://localhost:3000"],
   methods: ["GET", "POST", "PUT", "DELETE"]
 }));
 app.use(bodyParser.json());
